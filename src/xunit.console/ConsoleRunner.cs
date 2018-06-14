@@ -377,8 +377,10 @@ namespace Xunit.ConsoleClient
                 if (!ValidateFileExists(consoleLock, assembly.AssemblyFilename) || !ValidateFileExists(consoleLock, assembly.ConfigFilename))
                     return null;
 
-                // Turn off pre-enumeration of theories, since there is no theory selection UI in this runner
-                assembly.Configuration.PreEnumerateTheories = false;
+                // There is no theory selection UI in this runner, so turn off pre-enumeration of theories unless the user has configured it
+                if (!assembly.Configuration.PreEnumerateTheories.HasValue)
+                    assembly.Configuration.PreEnumerateTheories = false;
+
                 assembly.Configuration.DiagnosticMessages |= diagnosticMessages;
                 assembly.Configuration.InternalDiagnosticMessages |= internalDiagnosticMessages;
 
